@@ -1,8 +1,8 @@
 
-<div class="w-full my-5">
+<div class="w-full my-10 p-5 shadow-inner rounded">
     <div class="flex justify-between">
         <a routerLink="/task/new" class="">
-            <img src="../assets/img/add.png" class="max-w-xs h-8" title="Add new task">
+            <img src="../assets/img/add.png" class="max-w-xs h-8 cursor-pointer" title="Add new task">
         </a>
         <span class="self-center text-white bg-indigo-800 rounded-full px-3 pb-1">{{tasks.length}} Tasks</span>
     </div>
@@ -16,9 +16,9 @@
                 <span class="w-1/7"></span>
                 <span class="w-1/7"></span>
             </li>
-            <li *ngFor="let task of tasks" class="text-center">
+            <li *ngFor="let task of tasks; index as index" class="text-center">
                 <app-task-item [task]="task"
-                               [sequence]="tasks.indexOf(task) + 1"
+                               [sequence]="index + 1"
                                (task_deleted)="onTaskDeleted(task)">
                 </app-task-item>
             </li>

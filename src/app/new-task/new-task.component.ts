@@ -31,4 +31,8 @@ export class NewTaskComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  cancel(): void {
+    this.router.navigate(['']);
+  }
+
 }

@@ -2,14 +2,14 @@
 <div class="flex justify-between shadow-inner" (hover)="onHoverTask()" 
      [class.bg-indigo-500]="sequence % 2 === 0" [class.bg-indigo-400]="sequence % 2 !== 0">
     <span class="bg-blue-200 px-1">{{ sequence }}</span>
-    <a routerLink="/task/{{ task?.id }}" class="w-1/4 py-1">{{ task?.title }}</a>
+    <a routerLink="/task/{{ task?.id }}" class="w-1/4 py-1 hover:underline">{{ task?.title }}</a>
     <span class="w-1/5 py-1">{{ task?.date | date:"dd/MM/yyyy" }}</span>
     <span class="w-1/3 py-1">{{ task?.details }}</span>
     <span class="w-1/7 py-1">{{ task?.is_done | DoneNotYet }}</span>
     <span class="w-1/7 p-1 flex flex-wrap content-center hover:bg-indigo-800">
         <img (click)="onTaskDone()" src="../assets/img/checkmark.png" title="Marsk as done"
-              class="max-w-xs h-4 mr-3" [class.invisible]="task?.is_done === true">
+              class="max-w-xs h-4 mr-3 cursor-pointer" [class.invisible]="task?.is_done === true">
         <img (click)="task_deleted.emit()" src="../assets/img/delete.png" title="Delete task" 
-              class="max-w-xs h-4" >
+              class="max-w-xs h-4 cursor-pointer" >
     </span>
 </div>
