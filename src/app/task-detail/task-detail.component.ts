@@ -28,13 +28,6 @@ export class TaskDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTask();
-    if(this.task){
-      this.taskForm.setValue({id: this.task?.id,
-                              title: this.task?.title,
-                              details: this.task?.details,
-                              date: ''
-                            })
-    }
   }
 
   getTask(): void {
@@ -42,16 +35,19 @@ export class TaskDetailComponent implements OnInit {
     this.taskService.getTask(task_id).subscribe(task => this.task = task);
   }
 
-  
   onSubmit(): void {
     const task_values = this.taskForm.value;
     this.task = task_values;
-    console.log('task details: ', task_values);
     this.edit_mode = false;
   }
 
-  switchToEditMode(): void {
+  onSwitchToEditMode(): void {
     this.edit_mode = true;
+    this.taskForm.setValue({id: this.task?.id,
+                            title: this.task?.title,
+                            details: this.task?.details,
+                            date: this.task?.date
+                          })
   }
 
   goBack(): void {

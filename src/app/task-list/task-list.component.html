@@ -1,10 +1,13 @@
 
 <div class="w-full my-10 p-5 shadow-inner rounded">
-    <div class="flex justify-between">
-        <a routerLink="/task/new" class="">
-            <img src="../assets/img/add.png" class="max-w-xs h-8 cursor-pointer" title="Add new task">
+    <div class="flex justify-between items-center">
+        <a routerLink="/task/new" class="cursor-pointer rounded p-1 bg-gray-300 hover:bg-blue-300 hover:shadow-xl">
+            <img src="../assets/img/add.png" class="max-w-xs h-5" title="Add new task">
         </a>
-        <span class="self-center text-white bg-indigo-800 rounded-full px-3 pb-1">{{tasks.length}} Tasks</span>
+        <span class="self-end text-sm text-white bg-indigo-800 rounded-full px-2">
+            <span class="pr-1 font-bold">{{tasks.length}}</span>
+            <span class="bg-gradient-to-l from-indigo-800 to-indigo-600 px-1">To do</span>
+        </span>
     </div>
 
     <div class="mt-3">

@@ -25,8 +25,7 @@ export class NewTaskComponent implements OnInit {
 
   onSubmit(): void {
     const task_record = this.taskForm.value;
-    task_record.id = 99;
-    this.taskService.addTask(task_record);
+    this.taskService.addTask(task_record).subscribe();
     this.taskForm.reset();
     this.router.navigate(['']);
   }

@@ -8,8 +8,8 @@
     <div *ngIf="task" class="w-1/2 grid justify-items-center">
     
         <div class="w-full flex justify-between mb-6">
-            <button (click)="goBack()" class="bg-blue-500 hover:bg-blue-700 text-white text-2xl px-3 rounded-lg">&larr;</button>
-            <img *ngIf="!edit_mode" (click)="switchToEditMode()" src="../assets/img/edit.png" title="Edit task" class="max-w-xs h-6 cursor-pointer">
+            <button (click)="goBack()" class="bg-blue-500 hover:bg-blue-600 text-white text-2xl px-3 rounded">&larr;</button>
+            <button *ngIf="!edit_mode" (click)="onSwitchToEditMode()" class="px-2 rounded text-sm text-gray-800 hover:bg-gray-300">Edit</button>
         </div>
 
         <div *ngIf="task?.is_done" class="mb-1 items-center px-2 flex justify-self-end bg-indigo-800 rounded-full">
@@ -21,24 +21,26 @@
             <input type="number" formControlName="id" class="hidden"/>
             <div class="flex mb-2">
                 <label for="title" class="w-1/3">Title</label>
-                <input id="title" type="text" formControlName="title" class="w-2/3 pl-2 rounded" [class.hidden]="!edit_mode"/>
-                <span class="w-2/3" [class.hidden]="edit_mode">{{task?.title}}</span>
+                <input *ngIf="edit_mode" id="title" type="text" formControlName="title" class="w-2/3 pl-2 rounded"/>
+                <span *ngIf="!edit_mode" class="w-2/3">{{task?.title}}</span>
             </div>
             <div class="flex mb-2">
                 <label for="date" class="w-1/3">Scheduled For</label>
-                <input id="date" type="date" formControlName="date" [ngModel]="task?.date | date:'yyyy-MM-dd'" class="w-2/3 pl-2 rounded" [class.hidden]="!edit_mode"/>
-                <span class="w-2/3" [class.hidden]="edit_mode">{{task?.date | date:"dd/MM/yyyy"}}</span>
+                <input *ngIf="edit_mode" id="date" type="date" formControlName="date" class="w-2/3 pl-2 rounded"/>
+                <span *ngIf="!edit_mode" class="w-2/3">{{task?.date | date:"dd/MM/yyyy"}}</span>
             </div>
             <div class="flex mb-4">
                 <label for="details" class="w-1/3">Details</label>
-                <input id="details" type="text" formControlName="details" class="w-2/3 pl-2 rounded" [class.hidden]="!edit_mode"/>
-                <span class="w-2/3" [class.hidden]="edit_mode">{{task?.details}}</span>
+                <input *ngIf="edit_mode" id="details" type="text" formControlName="details" class="w-2/3 pl-2 rounded"/>
+                <span *ngIf="!edit_mode" class="w-2/3">{{task?.details}}</span>
             </div>
             <button *ngIf="edit_mode" type="submit" class="bg-green-400 border border-green-800 pb-1 px-3 rounded hover:bg-green-500">
                 Save
             </button>
-            <span *ngIf="edit_mode" class="mx-2 text-gray-700">-</span>
-            <span *ngIf="edit_mode" (click)="edit_mode=false;" class="text-gray-700 cursor-pointer hover:underline">cancel</span>
+            <span class="ml-2 text-gray-700">
+                <span *ngIf="edit_mode" class="mr-2">-</span>
+                <span *ngIf="edit_mode" (click)="edit_mode=false;" class="cursor-pointer hover:underline">cancel</span>
+            </span>
         </form>
 
     </div>
