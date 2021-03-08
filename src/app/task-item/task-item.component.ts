@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Task } from '../task';
 import { Input } from "@angular/core";
 import { Output, EventEmitter } from "@angular/core";
+import { TaskService } from '../task.service'
 
 @Component({
   selector: 'app-task-item',
@@ -13,10 +14,9 @@ export class TaskItemComponent implements OnInit {
   
   @Input() task?: Task;
   @Input() sequence: number = 1;
-
   @Output() task_deleted = new EventEmitter();
   
-  constructor() { }
+  constructor(private taskService:TaskService) { }
 
   ngOnInit(): void {
   }
@@ -24,8 +24,8 @@ export class TaskItemComponent implements OnInit {
   onTaskDone() {
     if(this.task) {
       this.task.is_done = true;
+      this.taskService.updateTask(this.task.id, {'is_done': true}).subscribe();
     }
-    window.alert('Task tagged as done!');
   }
 
   onHoverTask() {

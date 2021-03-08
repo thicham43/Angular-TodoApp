@@ -12,31 +12,25 @@ DB_NAME = "angulartodos"
 DB_USER = "openpg"
 DB_PASSWORD = "openpgpwd"
 TABLE_NAME = "task"
-
-TASK_SCHEMA = ('id', 'title', 'details', 'date', 'is_done')
+TABLE_COLUMNS = ('id', 'title', 'details', 'date', 'is_done')
 
 
 def open_pg_connexion():
     return pg.connect(host = DB_HOST, database = DB_NAME,
                       user = DB_USER, password = DB_PASSWORD)
 
-
 @app.route('/tasks')
 def get_tasks(task_ids = []):
-    # fetching tasks records from db
     conn = open_pg_connexion()
     cur = conn.cursor()
 
-    q = "SELECT %s FROM %s ORDER BY id" % (", ".join(TASK_SCHEMA), TABLE_NAME)
+    q = "SELECT %s FROM %s ORDER BY id" % (", ".join(TABLE_COLUMNS), TABLE_NAME)
     if task_ids:
         q = q.replace("ORDER BY", "WHERE id IN (%s) ORDER BY" % (",".join(map(str, task_ids))))
-    
     cur.execute(q)
-    tasks = [ dict(zip(TASK_SCHEMA, t)) for t in cur.fetchall() ]
+    tasks = [ dict(zip(TABLE_COLUMNS, t)) for t in cur.fetchall() ]
     for t in tasks:
         t["date"] = t["date"].strftime("%Y-%m-%d")
-    if len(tasks) == 1:
-        tasks = tasks[0]
     
     cur.close()
     conn.close()
@@ -54,18 +48,45 @@ def add_task():
     cur = conn.cursor()
     
     vals = json.loads(request.data.decode('UTF-8'))
-    q = """ INSERT INTO %s(%s) VALUES ('%s', '%s', '%s') RETURNING id
-        """ % (TABLE_NAME, ", ".join(TASK_SCHEMA[1:-1]), vals['title'],vals['details'], vals['date'])
-
+    q = """ INSERT INTO %s(%s) VALUES (%s) RETURNING id
+        """ % (TABLE_NAME, ", ".join(vals.keys()), ", ".join(map(lambda s: "'%s'" % s, vals.values())))
+    
     cur.execute(q)
     new_id = cur.fetchone()[0]
-    
     conn.commit()
     cur.close()
     conn.close()
     return get_task(new_id)
 
 
+@app.route('/task/update/<int:task_id>', methods=['POST'])
+def update_task(task_id):
+    def prepare_set_clause(d):
+        return ", ".join([("%s = '%s'" if isinstance(d[k], str) else "%s = %s") % (k, d[k]) for k in d])
+        
+    conn = open_pg_connexion()
+    cur = conn.cursor()
+
+    vals = json.loads(request.data.decode('UTF-8'))
+    vals.pop('id', None)
+    q = "UPDATE %s set %s WHERE id = %s" % (TABLE_NAME, prepare_set_clause(vals), task_id)
+
+    cur.execute(q)
+    conn.commit()
+    cur.close()
+    conn.close()
+    return get_task(task_id)
+
+@app.route('/task/delete', methods=['POST'])
+def delete_task():
+    conn = open_pg_connexion()
+    cur = conn.cursor()
+    data = json.loads(request.data.decode('UTF-8'))
+    cur.execute("DELETE FROM %s WHERE id = %s" % (TABLE_NAME, data.get('task_id')))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return get_tasks()
 
 
 if __name__ == '__main__':

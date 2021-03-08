@@ -10,11 +10,10 @@ import { Router } from '@angular/router';
 })
 export class NewTaskComponent implements OnInit {
 
-  taskForm = this.formBuilder.group({ id: '',
-                                      title: '',
-                                      details: '',
-                                      date: ''
-                                    });
+  newTaskForm = this.formBuilder.group({title: '',
+                                        details: '',
+                                        date: ''
+                                       });
 
   constructor(private formBuilder: FormBuilder,
               private taskService: TaskService,
@@ -24,9 +23,8 @@ export class NewTaskComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const task_record = this.taskForm.value;
+    const task_record = this.newTaskForm.value;
     this.taskService.addTask(task_record).subscribe();
-    this.taskForm.reset();
     this.router.navigate(['']);
   }
 

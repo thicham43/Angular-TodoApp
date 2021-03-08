@@ -35,10 +35,11 @@ export class TaskDetailComponent implements OnInit {
     this.taskService.getTask(task_id).subscribe(task => this.task = task);
   }
 
-  onSubmit(): void {
+  updateTask(): void {
+    this.edit_mode = false;
     const task_values = this.taskForm.value;
     this.task = task_values;
-    this.edit_mode = false;
+    this.taskService.updateTask(task_values.id, task_values).subscribe();
   }
 
   onSwitchToEditMode(): void {

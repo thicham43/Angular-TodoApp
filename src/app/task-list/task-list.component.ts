@@ -10,6 +10,7 @@ import { TaskService } from '../task.service'
 export class TaskListComponent implements OnInit {
 
   tasks: Task[] = [];
+  count_todo = 0;
   
   constructor(private taskService:TaskService) { }
 
@@ -18,12 +19,13 @@ export class TaskListComponent implements OnInit {
   }
 
   getTasks(): void {
-    this.taskService.getTasks().subscribe(tasks => this.tasks = tasks);
+    this.taskService.getTasks().subscribe(tasks => { this.tasks = tasks; 
+                                                     this.count_todo = tasks.filter((t: Task) => !t.is_done).length; });
   }
 
-  onTaskDeleted(task: Task) {
+  deleteTask(task: Task) {
+    this.taskService.deleteTask(task.id).subscribe();
     this.tasks.splice(this.tasks.indexOf(task), 1);
-    window.alert('Task deleted!');
   }
 
 }

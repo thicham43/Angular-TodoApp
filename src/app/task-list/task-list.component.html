@@ -4,8 +4,8 @@
         <a routerLink="/task/new" class="cursor-pointer rounded p-1 bg-gray-300 hover:bg-blue-300 hover:shadow-xl">
             <img src="../assets/img/add.png" class="max-w-xs h-5" title="Add new task">
         </a>
-        <span class="self-end text-sm text-white bg-indigo-800 rounded-full px-2">
-            <span class="pr-1 font-bold">{{tasks.length}}</span>
+        <span class="self-end text-sm text-white bg-indigo-800 rounded px-2">
+            <span class="pr-2 font-bold">{{ count_todo }}</span>
             <span class="bg-gradient-to-l from-indigo-800 to-indigo-600 px-1">To do</span>
         </span>
     </div>
@@ -22,7 +22,7 @@
             <li *ngFor="let task of tasks; index as index" class="text-center">
                 <app-task-item [task]="task"
                                [sequence]="index + 1"
-                               (task_deleted)="onTaskDeleted(task)">
+                               (task_deleted)="deleteTask(task)">
                 </app-task-item>
             </li>
         </ul>
