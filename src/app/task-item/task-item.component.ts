@@ -15,6 +15,7 @@ export class TaskItemComponent implements OnInit {
   @Input() task?: Task;
   @Input() sequence: number = 1;
   @Output() task_deleted = new EventEmitter();
+  show_actions = false;
   
   constructor(private taskService:TaskService) { }
 
@@ -28,9 +29,6 @@ export class TaskItemComponent implements OnInit {
     }
   }
 
-  onHoverTask() {
-    
-  }
 
 
 }
