@@ -21,9 +21,11 @@ export class TaskService {
                   headers: new HttpHeaders({'Content-Type':  'application/json'})
                 }
 
+  /*
   getTasks(): Observable<Task[] | any> {
     return this.http.get(`${API_URL}/tasks`);
   }
+  */
 
   getTask(task_id: number): Observable<Task | any> {
     return this.http.get(`${API_URL}/tasks/${task_id}`).pipe(map((tasks: any) => tasks[0]));
@@ -43,10 +45,10 @@ export class TaskService {
 
   //------------  work with mock data
 
-  /* getTasks(): Observable<Task[]> {
+  getTasks(): Observable<Task[]> {
     const tasks = of(TASKS);
     return tasks;
-  } */
+  }
 
   /* getTask(task_id: number): Observable<Task|undefined> {
     return of(TASKS.find(t => t.id === task_id));
